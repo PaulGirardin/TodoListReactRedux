@@ -32,7 +32,7 @@ const initialState = [
 		"complete": false
 	}
 ];
-	
+
 function todos(state = initialState, action) {
 	switch (action.type) {
 		case 'LOAD_TODOS':
@@ -50,5 +50,5 @@ function todos(state = initialState, action) {
 			return state;
 	}
 }
-	
+
 export default todos;

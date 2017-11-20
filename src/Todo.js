@@ -10,18 +10,15 @@ class Todo extends React.Component {
 		this.props.onToggleTodo(i);
 	}
 
-	shouldComponentUpdate(){
-		return true;
-	}
-
 	render() {
 		const todo = this.props.todo;
+
 		return (
-			<li onClick={() => this.props.onToggleTodo(this.props.index)} 
-				className={(todo.complete ? 'done' : '')}>
-			{ todo.label }
+			<li className={(todo.complete ? 'done' : '')} onClick={() => this.props.onToggleTodo(this.props.index)}>
+				{ todo.label }
 		 	</li>
 		);
 	}
 }
+
 export default Todo;

@@ -10,7 +10,7 @@ class App extends Component {
 		super();
 		this.onChange = this.onChange.bind(this);
 		this.onSubmit = this.onSubmit.bind(this);
-		this.changeFilter = this.changeFilter.bind(this);
+		this.filter = this.filter.bind(this);
 		this.state = {
 			term: '',
 			todos: [],
@@ -30,7 +30,7 @@ class App extends Component {
 		this.props.toggleTodo(index)
 	}
 
-	changeFilter(event) {
+	filter(event) {
 		if( event.target.value === 'complete') {
 			this.setState({ filter: true});
 		}
@@ -48,31 +48,37 @@ class App extends Component {
 
 	render() {
 		let todos = this.props.todos;
-		if (this.state.filter !== '') {
-			todos = todos.filter((item) => item.complete == this.state.filter );
-		}
-		console.log(todos);
+
 		return (
 			<div>
 				<label>
-				Nom:
-					<input type="text" value={this.state.term} onChange={this.onChange} />
+					Name: <input type="text" value={this.state.term} onChange={this.onChange} />
 				</label>
-				<button value="Submit" onClick={this.onSubmit}>Ajouter</button>
+				<button value="Submit" onClick={this.onSubmit}>Add</button>
 				<ul>
 					{todos.length ?
 						(
-							todos.map((todo, index) => (<Todo key={index} index={index} todo={todo} onToggleTodo={this.onToggleTodo} />))
+							todos.map(
+								(todo, index) => {
+									if (this.state.filter === true && !todo.complete) {
+										return null;
+									}
+									if (this.state.filter === false && todo.complete) {
+										return null;
+									}
+									return <Todo key={index} index={index} todo={todo} onToggleTodo={this.onToggleTodo} />
+								}
+							)
 						) : (
-							<p>Chargement...</p>
+							<p>No todo</p>
 						)
 					}
 				</ul>
 				<div>
-					Filtre:  
-					<input type="radio" name="filter" value="all" onChange={this.changeFilter} /> Tous
-					<input type="radio" name="filter" value="complete" onChange={this.changeFilter} /> Terminés
-					<input type="radio" name="filter" value="todo" onChange={this.changeFilter} /> A faire
+					Filter:  
+					<input type="radio" name="filter" value="all" onChange={this.filter} /> All
+					<input type="radio" name="filter" value="complete" onChange={this.filter} /> Completed
+					<input type="radio" name="filter" value="todo" onChange={this.filter} /> To do
 				</div>
 			</div>
 		);
@@ -97,7 +103,6 @@ function mapStateToProps(state) {
 	return {
 		todos: state.todos
 	};
-
 }
 
 const TodosContainer = connect(mapStateToProps, mapDispatchToProps)(App);

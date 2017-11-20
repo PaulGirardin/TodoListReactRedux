@@ -1,7 +1,7 @@
 import { combineReducers, createStore } from 'redux';
 import todos from '../reducers/todos';
 
-let rootReducer = combineReducers({ todos });
-let store = createStore(rootReducer);
+let reducer = combineReducers({ todos });
+let store = createStore(reducer);
 
 export default store;
